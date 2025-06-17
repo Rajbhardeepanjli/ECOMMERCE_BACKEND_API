@@ -1,4 +1,4 @@
-const {userValidationSchema}=require('../validation/validator');
+const {userValidationSchema}=require('../validation/userValidation');
 const User=require('../models/user');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken')
@@ -55,7 +55,7 @@ let userLogin=async (req,res)=>{
     const token =jwt.sign(
       {userId:user._id, email:user.email, isAdmin:user.isAdmin},
       process.env.JWT_SECRET,
-      {expiresIn:'12h'}
+      {expiresIn:'12h'} 
     )
 
     res.status(201).json({message:'User Login Successfully',token});

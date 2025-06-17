@@ -14,21 +14,34 @@ let mongoConnection=require('./config/db');
 mongoConnection.then(()=>{console.log("Database connection is successful");}).catch((error)=>{console.log("there is problem in connection of database");});
 //---------------------models---------------------------------
 const User=require('./models/user');
+
+//-----------------------------------------Form Image Handling----------------------------------------
+const multer = require('multer');
+const { cloudinary } = require('./config/cloudinary');
+const { storage } = require('./config/cloudinary');
+const upload = multer({ storage });
 //--------------------validation--------------------------
-const {userValidationSchema}=require('./validation/validator');
+const {userValidationSchema}=require('./validation/userValidation');
+const {productValidationSchema}=require('./validation/productValidation')
 
 
 //-----------------------middleware----------------------
 
 const cors=require('cors');
 app.use(express.json());
+const authenticate=require('./middleware/authMiddleware')
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
 //----------------------API------------------------------
-
+//User_routes---------------
 const authRoutes=require('./routes/authRoutes');
 app.use('/api/auth',authRoutes);
+//Product_routes--------------
+const productRoutes=require('./routes/productRoutes')
+app.use('/api/products',productRoutes)  
+
+
 
 app.listen(process.env.PORT,(req,res)=>{
     console.log(`app is listening to port ${process.env.PORT}`)
