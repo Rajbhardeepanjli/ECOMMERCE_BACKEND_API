@@ -40,8 +40,15 @@ app.use('/api/auth',authRoutes);
 //Product_routes--------------
 const productRoutes=require('./routes/productRoutes')
 app.use('/api/products',productRoutes)  
+//Cart_routes--------------------------------------------
+const cartRoutes=require("./routes/cartRoutes")
+app.use('/api/cart',cartRoutes)
 
-
+// ------------------- Global Error Handler ------------------------
+app.use((err, req, res, next) => {
+    console.error("Unhandled Error:", err);
+    res.status(500).json({ message: "Server Error", error: err.message });
+});
 
 app.listen(process.env.PORT,(req,res)=>{
     console.log(`app is listening to port ${process.env.PORT}`)
